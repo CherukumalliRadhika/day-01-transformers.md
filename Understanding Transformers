@@ -1,0 +1,39 @@
+# Day 1: Understanding Transformers
+
+## What I learned today
+The Transformer architecture (introduced in the "Attention Is All You Need" paper, 2017) 
+is the foundation behind most modern AI models like GPT, BERT, and Claude.
+
+## Key Concepts
+
+### 1. Self-Attention
+- Allows the model to weigh the importance of different words in a sentence relative to each other.
+- Example: In "The cat sat on the mat because it was tired," 
+  self-attention helps the model figure out that "it" refers to "the cat," not "the mat."
+
+### 2. Encoder-Decoder Structure
+- **Encoder**: Processes the input and builds a contextual understanding.
+- **Decoder**: Generates output based on that understanding (used in translation, text generation).
+- Some models use only the encoder (BERT) or only the decoder (GPT).
+
+### 3. Positional Encoding
+- Since transformers don't process words sequentially (unlike RNNs), 
+  they need a way to know word order — positional encoding adds that information.
+
+### 4. Multi-Head Attention
+- Instead of one attention mechanism, transformers use multiple "heads" 
+  to focus on different parts of the sentence simultaneously.
+- This helps capture different types of relationships (grammar, meaning, context) at once.
+
+## Why it matters
+Before transformers, models like RNNs and LSTMs processed text word-by-word, 
+which was slow and struggled with long-range dependencies. 
+Transformers process entire sequences in parallel, making them faster to train 
+and better at understanding context over long text.
+
+## Resources I used
+- "Attention Is All You Need" (Vaswani et al., 2017)
+- Jay Alammar's "The Illustrated Transformer" blog
+
+## Tomorrow's plan
+Dive into tokenization — how raw text gets converted into numbers a model can understand.
