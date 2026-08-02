@@ -1,0 +1,73 @@
+# Day 5: Fine-Tuning vs RAG (Retrieval-Augmented Generation)
+
+## What I learned today
+When you want an AI model to perform better on a specific task or use up-to-date/
+private knowledge, there are two main approaches: **fine-tuning** and **RAG**. 
+Today I explored what each does and when to use them.
+
+## Key Concepts
+
+### 1. Fine-Tuning
+- Takes a pre-trained model and continues training it on a smaller, task-specific dataset.
+- Adjusts the model's internal weights so it "bakes in" new behavior, style, or knowledge.
+
+**Example use case:**
+- Training a general model on thousands of customer support tickets so it responds 
+  in your company's tone and handles domain-specific queries automatically.
+
+**Pros:**
+- Model internalizes patterns deeply — good for consistent tone, style, or specialized tasks.
+- No need to retrieve external data at inference time — faster responses.
+
+**Cons:**
+- Expensive and time-consuming (needs quality labeled data + compute).
+- Hard to update — if information changes, you need to retrain again.
+- Risk of "catastrophic forgetting" (losing some general capabilities while specializing).
+
+### 2. RAG (Retrieval-Augmented Generation)
+- Instead of changing the model, RAG retrieves relevant external documents/data 
+  at query time and feeds them into the prompt as context.
+- The model then generates an answer using both its own knowledge and the retrieved info.
+
+**How it works (simplified flow):**
+User query → Search a knowledge base/vector database → Retrieve top relevant chunks
+→ Insert chunks into prompt → Model generates answer using that context
+**Example use case:**
+- A chatbot that answers questions about a company's internal documentation by 
+  pulling the latest policy PDF at query time, instead of memorizing it during training.
+
+**Pros:**
+- Easy to update — just update the knowledge base, no retraining needed.
+- Reduces hallucination by grounding answers in real, retrievable documents.
+- Cheaper than fine-tuning for knowledge-heavy use cases.
+
+**Cons:**
+- Depends heavily on retrieval quality — bad search results lead to bad answers.
+- Adds latency (extra retrieval step before generation).
+- Doesn't change the model's underlying style/behavior, only its knowledge access.
+
+### 3. When to use which
+
+| Use Fine-Tuning when...                          | Use RAG when...                                   |
+|---------------------------------------------------|----------------------------------------------------|
+| You need a consistent tone/style/format            | You need up-to-date or frequently changing info    |
+| The task pattern is stable and well-defined        | You have large external knowledge bases/documents  |
+| You have a solid labeled dataset                   | You want to avoid expensive retraining              |
+| Latency at inference must be minimal               | Explainability/source citation matters             |
+
+### 4. They aren't mutually exclusive
+- Many real-world systems combine both: fine-tune a model for tone/behavior, 
+  then use RAG to keep it updated with fresh, factual knowledge.
+
+## Why it matters
+Choosing between fine-tuning and RAG (or combining them) is a key architectural 
+decision when building AI applications — it affects cost, accuracy, update speed, 
+and how much the system can "hallucinate" versus stay grounded in real data.
+
+## Resources I used
+- "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks" (Lewis et al., 2020)
+- OpenAI Fine-tuning documentation
+
+## Tomorrow's plan
+Explore hallucinations — why AI models make things up and how techniques like 
+RAG and better prompting help reduce them.
