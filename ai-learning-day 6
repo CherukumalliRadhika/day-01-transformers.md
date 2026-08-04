@@ -1,0 +1,69 @@
+# Day 6: Hallucinations — Why AI Models Make Things Up
+
+## What I learned today
+"Hallucination" in AI refers to when a model generates information that sounds 
+confident and fluent but is factually incorrect, made up, or not grounded in 
+any real source.
+
+## Key Concepts
+
+### 1. What causes hallucinations
+- **Next-token prediction, not fact-checking**: Language models are trained to 
+  predict the most statistically likely next word, not to verify truth. If a 
+  plausible-sounding answer fits the pattern, the model will generate it even 
+  if it's false.
+- **Gaps in training data**: If a model wasn't trained on information about a 
+  topic, it may still "guess" an answer rather than say "I don't know."
+- **Ambiguous or vague prompts**: Unclear questions give the model more room 
+  to fill gaps with invented details.
+- **Outdated knowledge**: Models have a training cutoff date — asking about 
+  events after that date can lead to fabricated or guessed answers.
+- **Long, complex outputs**: The longer the generated response, the higher 
+  the chance of drifting into inaccurate territory partway through.
+
+### 2. Common types of hallucinations
+- **Factual hallucination**: Inventing facts, dates, statistics, or events 
+  that never happened.
+- **Source hallucination**: Citing a paper, book, or article that doesn't 
+  exist (or misattributing a real quote to the wrong person).
+- **Logical hallucination**: Producing an answer that sounds coherent but 
+  contains internal contradictions or broken reasoning.
+- **Code hallucination**: Generating code that references functions, 
+  libraries, or APIs that don't actually exist.
+
+### 3. Techniques to reduce hallucinations
+- **RAG (Retrieval-Augmented Generation)**: Grounding responses in real, 
+  retrieved documents instead of relying purely on memorized knowledge 
+  (connects to Day 5).
+- **Better prompting**: Asking the model to cite sources, say "I don't know" 
+  when uncertain, or verify its own answer step by step.
+- **Chain-of-thought prompting**: Encouraging step-by-step reasoning can 
+  reduce logical errors, though it doesn't fully eliminate factual ones.
+- **Lower temperature settings**: Reducing randomness in generation makes 
+  outputs more conservative and less likely to "creatively" invent details.
+- **Fine-tuning on verified data**: Training on high-quality, fact-checked 
+  datasets can reduce (but not eliminate) hallucination rates.
+- **Human-in-the-loop review**: For critical use cases (medical, legal, 
+  financial), having a human verify outputs remains essential.
+
+### 4. Why hallucinations can't be fully eliminated (yet)
+- Language models don't have a built-in "truth database" — they generate 
+  text based on patterns learned from training data.
+- Even with RAG, the model can still misinterpret or blend retrieved 
+  information incorrectly.
+- Confidence in tone doesn't equal accuracy — models often sound equally 
+  sure whether they're right or wrong.
+
+## Why it matters
+Understanding hallucinations is critical for building trustworthy AI systems. 
+Knowing *why* they happen helps in designing prompts, choosing architectures 
+(like RAG), and setting realistic expectations for where AI output still 
+needs human verification.
+
+## Resources I used
+- "Survey of Hallucination in Natural Language Generation" (Ji et al., 2023)
+- OpenAI and Anthropic documentation on model limitations
+
+## Tomorrow's plan
+Build a small sentiment classifier using a pretrained model, with code, to 
+apply what I've learned so far in a hands-on project.
