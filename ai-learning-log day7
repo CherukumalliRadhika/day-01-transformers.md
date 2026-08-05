@@ -1,0 +1,83 @@
+# Day 7: Building a Tiny Sentiment Classifier (Hands-On)
+
+## What I learned today
+After a week of theory, I built a small sentiment classifier using a pretrained 
+model to see these concepts (tokenization, embeddings, transformers) in action.
+
+## Tools used
+- Python
+- Hugging Face `transformers` library
+- A pretrained DistilBERT model fine-tuned for sentiment analysis
+
+## Setup
+```bash
+pip install transformers torch
+```
+
+## Code
+
+```python
+from transformers import pipeline
+
+# Load a pretrained sentiment-analysis pipeline
+# Uses a DistilBERT model fine-tuned on SST-2 (Stanford Sentiment Treebank)
+classifier = pipeline("sentiment-analysis")
+
+# Test sentences
+reviews = [
+    "The food was cold and the service was slow.",
+    "Amazing experience, I'll definitely come back!",
+    "It was okay, nothing special.",
+    "Absolutely terrible, worst purchase ever.",
+    "I'm really impressed with the quality and speed of delivery."
+]
+
+for review in reviews:
+    result = classifier(review)[0]
+    print(f"Text: {review}")
+    print(f"Sentiment: {result['label']} (confidence: {result['score']:.4f})\n")
+```
+
+## Sample output
+Text: The food was cold and the service was slow.
+Sentiment: NEGATIVE (confidence: 0.9987)
+
+Text: Amazing experience, I'll definitely come back!
+Sentiment: POSITIVE (confidence: 0.9996)
+
+Text: It was okay, nothing special.
+Sentiment: NEGATIVE (confidence: 0.7134)
+
+Text: Absolutely terrible, worst purchase ever.
+Sentiment: NEGATIVE (confidence: 0.9998)
+
+Text: I'm really impressed with the quality and speed of delivery.
+Sentiment: POSITIVE (confidence: 0.9994)
+## What's happening under the hood
+1. **Tokenization** — Each sentence is split into subword tokens (Day 2).
+2. **Embeddings** — Tokens are converted into numerical vectors.
+3. **Transformer encoder** — DistilBERT (a smaller, faster version of BERT) 
+   processes the tokens bidirectionally to build context-aware representations (Day 1).
+4. **Classification head** — A simple layer on top of the encoder outputs a 
+   Positive/Negative label with a confidence score.
+
+## Observations
+- The neutral-sounding review ("It was okay, nothing special.") was still 
+  classified as NEGATIVE — since this model is binary (only Positive/Negative), 
+  it has no "Neutral" class, so it leans toward whichever side is statistically closer.
+- Confidence scores are useful — low confidence (like 0.71) signals the model 
+  is less sure, which is often a hint the sentence is genuinely ambiguous.
+
+## Why it matters
+Seeing a pretrained model work in just a few lines of code shows the practical 
+payoff of the theory from Days 1-6. This is also the first step toward 
+understanding how fine-tuning would let me train a custom classifier on 
+my own labeled data.
+
+## Resources I used
+- Hugging Face `transformers` documentation
+- Hugging Face `pipeline` API guide
+
+## Tomorrow's plan
+Compare 2-3 popular LLMs (e.g., GPT, Claude, Gemini) on a simple task and 
+document the differences in output style, accuracy, and reasoning.
