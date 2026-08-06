@@ -1,0 +1,56 @@
+This tests two things at once:
+1. **Reasoning** — it's a classic "trick" question (the answer is 9, not 8, 
+   since "all but 9 die" means 9 survive).
+2. **Instruction-following** — can the model follow the formatting request 
+   (reasoning + separate formal summary)?
+
+## Models compared
+- GPT-style model
+- Claude-style model
+- Gemini-style model
+
+*(Note: exact behavior varies by model version — this is a general comparison 
+of tendencies I observed, not a benchmark of specific model scores.)*
+
+## Observations
+
+### Reasoning accuracy
+- Most modern models got the "9 sheep" answer correct when asked to explain 
+  reasoning step by step first.
+- Models were more likely to make the classic mistake (answering 8) when 
+  asked for just the final number with no reasoning steps — showing that 
+  **prompting for reasoning (Day 4's chain-of-thought idea) directly improves accuracy.**
+
+### Response style differences
+- Some models tend to be more concise and direct by default.
+- Some models tend to add more explanatory context or caveats unless asked to be brief.
+- Formatting instructions (like "1-sentence summary in formal tone") were 
+  generally followed well, but strictness varied — some models added extra 
+  sentences despite the "1-sentence" instruction.
+
+### Instruction-following
+- Models that explicitly separated "reasoning" from "summary" as asked tended 
+  to produce cleaner, more useful output.
+- Vague prompts led to more variation between models; specific, structured 
+  prompts (Day 4 lesson) reduced that variation significantly.
+
+## Key takeaway
+The underlying architecture (Transformer-based, from Day 1) is similar across 
+these models, but differences in training data, fine-tuning, and alignment 
+techniques lead to real differences in tone, verbosity, and reliability — 
+especially on reasoning tasks.
+
+## Why it matters
+No single model is universally "best" — the right choice depends on the task: 
+reasoning-heavy work, creative writing, code generation, or conversational tone 
+all favor different strengths. Testing the same prompt across models is a 
+practical way to evaluate this instead of relying on marketing claims.
+
+## Resources I used
+- Direct testing/comparison of prompts across model interfaces
+- General discussions on LLM benchmarking practices (e.g., MMLU, HellaSwag as 
+  reference points for standardized comparison)
+
+## Tomorrow's plan
+Explore embeddings in more depth — how vector databases use them for 
+semantic search, and build a tiny similarity search example.
