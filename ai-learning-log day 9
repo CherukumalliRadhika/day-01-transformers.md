@@ -1,0 +1,92 @@
+# Day 9: Vector Databases & Semantic Search
+
+## What I learned today
+Building on Day 2 (embeddings), I explored how embeddings power **semantic 
+search** — finding results based on meaning rather than exact keyword matches — 
+and built a tiny similarity search example.
+
+## Key Concepts
+
+### 1. The problem with keyword search
+- Traditional search matches exact words. Searching "affordable laptop" won't 
+  find a document that says "budget-friendly notebook" even though they mean 
+  the same thing.
+- Semantic search fixes this by comparing **meaning**, not exact text.
+
+### 2. How semantic search works
+1. Convert all documents into embeddings (vectors) using a model.
+2. Convert the user's query into an embedding using the same model.
+3. Compare the query vector to all document vectors using a similarity metric.
+4. Return the documents with the highest similarity scores.
+
+### 3. Cosine similarity
+The most common way to measure how "close" two vectors are in meaning:
+- Score close to **1** = very similar meaning.
+- Score close to **0** = unrelated.
+- Score close to **-1** = opposite meaning (rare in practice for text embeddings).
+
+### 4. Vector databases
+Regular databases aren't built to efficiently search millions of high-dimensional 
+vectors. Vector databases (like Pinecone, Weaviate, Chroma, FAISS) are optimized 
+specifically for this using techniques like **approximate nearest neighbor (ANN)** 
+search, trading a little accuracy for massive speed gains at scale.
+
+This is also the backbone of **RAG** (Day 5) — retrieving relevant chunks of 
+text is literally a vector similarity search.
+
+## Hands-on example
+
+```bash
+pip install sentence-transformers scikit-learn
+```
+
+```python
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Load a small pretrained embedding model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+documents = [
+    "Budget-friendly laptop with long battery life",
+    "High-end gaming PC with RGB lighting",
+    "Affordable notebook for students",
+    "Luxury smartphone with premium camera",
+    "Cheap laptop good for everyday tasks"
+]
+
+query = "affordable laptop"
+
+# Convert documents and query into embeddings
+doc_embeddings = model.encode(documents)
+query_embedding = model.encode([query])
+
+# Compute similarity between query and each document
+scores = cosine_similarity(query_embedding, doc_embeddings)[0]
+
+# Rank documents by similarity
+ranked = sorted(zip(documents, scores), key=lambda x: x[1], reverse=True)
+
+for doc, score in ranked:
+    print(f"{score:.4f} | {doc}")
+```
+
+## Sample output
+## Observations
+- Even though the query "affordable laptop" doesn't exactly match any document 
+  word-for-word, the top results are all laptop-related and budget-focused — 
+  proving the model captured *meaning*, not just keywords.
+- Unrelated items (gaming PC, smartphone) scored much lower, as expected.
+
+## Why it matters
+Semantic search is the foundation of modern search engines, recommendation 
+systems, and RAG pipelines. Understanding it hands-on makes it clear how 
+Day 2's "embeddings" concept turns into a real, useful application.
+
+## Resources I used
+- Sentence-Transformers documentation
+- Pinecone's "What is a Vector Database" guide
+
+## Tomorrow's plan
+Explore AI agents — how models can use tools, take multi-step actions, and 
+reason iteratively instead of giving a single one-shot response.
